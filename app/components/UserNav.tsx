@@ -43,7 +43,9 @@ export const UserNav = async ({ email, name, userImage }: iAppProps) => {
           <DropdownMenuItem asChild>
             <Link href="/sell">Sell your Product</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>Test Item</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/settings">Settings</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>Test Item</DropdownMenuItem>
           <DropdownMenuItem>Test Item</DropdownMenuItem>
         </DropdownMenuGroup>

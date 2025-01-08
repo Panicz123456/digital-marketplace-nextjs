@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
-export const SubmitButton = () => {
+export const SubmitButton = ({ title }: { title: string }) => {
   const { pending } = useFormStatus();
 
   return (
@@ -15,9 +15,7 @@ export const SubmitButton = () => {
           Please Wait
         </Button>
       ) : (
-        <Button type="submit">
-            Create Your Product
-        </Button>
+        <Button type="submit">{title}</Button>
       )}
     </>
   );

@@ -13,16 +13,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { JSONContent } from "@tiptap/react";
 
-import { SelectCategory } from "../components/SelectCategory";
-import { TipTapEditor } from "../components/Editor";
-import { UploadDropzone } from "../lib/uploadthing";
-
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
-import { SellProduct, State } from "../actions";
+import { SellProduct, State } from "@/app/actions";
 import { toast } from "sonner";
-import { SubmitButton } from "../components/SubmitButton";
+import { SubmitButton } from "@/app/components/SubmitButton";
 import { redirect } from "next/navigation";
+import { SelectCategory } from "@/app/components/SelectCategory";
+import { TipTapEditor } from "@/app/components/Editor";
+import { UploadDropzone } from "@/app/lib/uploadthing";
 
 const PageSell = () => {
   const initialState: State = { message: "", status: undefined };
@@ -35,7 +34,7 @@ const PageSell = () => {
   useEffect(() => {
     if (state.status === "success") {
       toast.success(state.message);
-      redirect("/")
+      redirect("/");
     } else if (state.status === "error") {
       toast.error(state.message);
     }
@@ -166,7 +165,7 @@ const PageSell = () => {
             </div>
           </CardContent>
           <CardFooter className="mt-5">
-            <SubmitButton />
+            <SubmitButton title="Create Your Product" />
           </CardFooter>
         </form>
       </Card>

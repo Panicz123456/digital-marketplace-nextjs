@@ -29,6 +29,20 @@ const productSchema = z.object({
     .min(1, { message: "Please upload a zip of your product" }),
 });
 
+const userSettingsSchema = z.object({
+  firstName: z
+    .string()
+    .min(3, { message: "Minimum length of 3 require" })
+    .or(z.literal(""))
+    .optional(),
+
+  lastName: z
+    .string()
+    .min(3, { message: "Minimum length of 3 require" })
+    .or(z.literal(""))
+    .optional(),
+});
+
 export async function SellProduct(prevState: any, formData: FormData) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -73,6 +87,47 @@ export async function SellProduct(prevState: any, formData: FormData) {
   const state: State = {
     status: "success",
     message: "Your Product has been created",
+  };
+
+  return state;
+}
+
+export async function UpdateUserSettings(prevState: any, formData: FormData) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    throw new Error("Something went wrong");
+  }
+
+  const validateFields = userSettingsSchema.safeParse({
+    firstName: formData.get("firstName"),
+    lastName: formData.get("lastName"),
+  });
+
+  if (!validateFields.success) {
+    const state: State = {
+      status: "error",
+      errors: validateFields.error.flatten().fieldErrors,
+      message: "Oops, I think there is mistake with your inputs.",
+    };
+
+    return state;
+  }
+
+  const data = await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      firstName: validateFields.data.firstName,
+      lastName: validateFields.data.lastName,
+    },
+  });
+
+  const state: State = {
+    status: "success",
+    message: "Your Settings has been updated",
   };
 
   return state;
