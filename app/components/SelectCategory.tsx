@@ -3,12 +3,12 @@
 import { Card, CardHeader } from "@/components/ui/card";
 import { categoryItems } from "../lib/categroyItems";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 export const SelectCategory = () => {
   const [selectCategory, setSelectedCategory] = useState<string | null>(null);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <input type="hidden" name="category" value={selectCategory || ""} />
       {categoryItems.map((item) => (
         <div key={item.id} className="cursor-pointer">
           <Card
