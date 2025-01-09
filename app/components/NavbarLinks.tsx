@@ -13,17 +13,17 @@ export const navbarLinks = [
   {
     id: 1,
     name: "Templates",
-    href: "#",
+    href: "/products/template",
   },
   {
     id: 2,
     name: "Ui Kits",
-    href: "#",
+    href: "/products/uikit",
   },
   {
     id: 3,
     name: "Icons",
-    href: "#",
+    href: "/products/icon",
   },
 ];
 
@@ -33,12 +33,15 @@ export const NavbarLinks = () => {
   return (
     <div className="hidden md:flex justify-center items-center col-span-6 gap-x-2">
       {navbarLinks.map((item) => (
-        <Link href={item.href} key={item.id} className={cn(
+        <Link
+          href={item.href}
+          key={item.id}
+          className={cn(
             pathname === item.href
-            ? "bg-muted"
-            : "hover:bg-muted hover:bg-opacity-75",
+              ? "bg-muted"
+              : "hover:bg-muted hover:bg-opacity-75",
             "group flex items-center px-2 py-2 font-medium rounded-md"
-        )}>
+          )}>
           {item.name}
         </Link>
       ))}
