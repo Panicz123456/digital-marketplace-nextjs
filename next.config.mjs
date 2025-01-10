@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "utfs.io",
+        hostname: "4c1n8w1exu.ufs.sh",
         protocol: "https",
         port: "",
       },

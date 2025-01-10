@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
-export const SubmitButton = ({ title }: { title: string }) => {
+export function SubmitButton({ title }: { title: string }) {
   const { pending } = useFormStatus();
 
   return (
     <>
       {pending ? (
         <Button disabled>
-          <Loader2 className="mr-2  animate-spin size-4" />
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           Please Wait
         </Button>
       ) : (
@@ -19,4 +19,23 @@ export const SubmitButton = ({ title }: { title: string }) => {
       )}
     </>
   );
-};
+}
+
+export function BuyButton({ price }: { price: number }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <>
+      {pending ? (
+        <Button disabled size="lg" className="w-full mt-10">
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Please Wait
+        </Button>
+      ) : (
+        <Button type="submit" size="lg" className="w-full mt-10">
+          Buy for ${price}
+        </Button>
+      )}
+    </>
+  );
+}

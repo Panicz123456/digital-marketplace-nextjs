@@ -4,6 +4,9 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
 import prisma from "./lib/db";
 import { type CategoryType } from "@prisma/client";
+import { stripe } from "./lib/stripe";
+import { redirect } from "next/navigation";
+import { Divide } from "lucide-react";
 
 export type State = {
   status: "error" | "success" | undefined;
@@ -132,3 +135,67 @@ export async function UpdateUserSettings(prevState: any, formData: FormData) {
 
   return state;
 }
+
+export const BuyProduct = async (formData: FormData) => {
+  const id = formData.get("id") as string;
+  const data = await prisma.product.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      name: true,
+      smallDescription: true,
+      price: true,
+      images: true,
+    },
+  });
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          unit_amount: Math.round(data?.price as number) * 100,
+          product_data: {
+            name: data?.name as string,
+            description: data?.smallDescription,
+            images: data?.images,
+          },
+        },
+        quantity: 1,
+      },
+    ],
+    success_url: "http://localhost:3000/payment/success",
+    cancel_url: "http://localhost:3000/payment/cancel",
+  });
+
+  return redirect(session.url as string);
+};
+
+export const CreateStripeAccount = async () => {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  const data = await prisma.user.findUnique({
+    where: {
+      id: user.id,
+    },
+    select: {
+      connectedAccountId: true,
+    },
+  });
+
+  const accountLink = await stripe.accountLinks.create({
+    account: data?.connectedAccountId as string,
+    refresh_url: `http://localhost:3000/billing`,
+    return_url: `http://localhost:3000/return/${data?.connectedAccountId}`,
+    type: "account_onboarding",
+  });
+
+  return redirect(accountLink.url);
+};
