@@ -1,4 +1,4 @@
-import { CreateStripeAccount } from "@/app/actions";
+import { CreateStripeAccount, GetStripeDashboardLink } from "@/app/actions";
 import { SubmitButton } from "@/app/components/SubmitButton";
 import prisma from "@/app/lib/db";
 import { Button } from "@/components/ui/button";
@@ -46,6 +46,12 @@ const BillingPage = async () => {
             {data?.stripeConnectedLink === false && (
               <form action={CreateStripeAccount}>
                 <SubmitButton title="Link your Accout to stripe" />
+              </form>
+            )}
+
+            {data?.stripeConnectedLink === true && (
+              <form action={GetStripeDashboardLink}>
+                <SubmitButton title="View dashboard" />
               </form>
             )}
           </CardContent>
